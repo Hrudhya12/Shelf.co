@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Successful – Shelf.co</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding-top: 80px;
+      text-align: center;
+    }
+
+    .navbar {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 18px;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .box {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #3a7afe;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background: #2f63d8;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="logo">Shelf.co</a>
+    </div>
+    <div class="nav-right">
+      <a href="products.html">Books</a>
+      <a href="order.html">Orders</a>
+      <a href="login.html" id="login-link">Login</a>
+      <a href="#" id="logout-link" style="display:none" onclick="logout()">Logout</a>
+    </div>
+  </nav>
+
+  <div class="box">
+    <h1>Payment Successful 🎉</h1>
+    <p>Thank you for your purchase!</p>
+    <p>Please enter your email so we can contact you if needed:</p>
+
+    <input id="email" type="email" placeholder="Enter your email">
+
+    <button onclick="saveEmail()">Submit</button>
+  </div>
+
+  <script>
+    function getUser() {
+      const raw = localStorage.getItem("user");
+      return raw ? JSON.parse(raw) : null;
+    }
+
+    function setupAuthLinks() {
+      const user = getUser();
+      const loginLink = document.getElementById("login-link");
+      const logoutLink = document.getElementById("logout-link");
+
+      if (user) {
+        loginLink.style.display = "none";
+        logoutLink.style.display = "inline";
+      } else {
+        loginLink.style.display = "inline";
+        logoutLink.style.display = "none";
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+
+    function saveEmail() {
+      const email = document.getElementById("email").value;
+
+      if (!email) {
+        alert("Please enter an email.");
+        return;
+      }
+
+      alert("Thank you! We will contact you if needed.");
+      window.location.href = "order.html";
+    }
+
+    setupAuthLinks();
+  </script>
+
+</body>
+</html>

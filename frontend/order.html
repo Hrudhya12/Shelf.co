@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History – Shelf.co</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #2c2c2c;
+      padding-top: 80px;
+    }
+
+    .navbar {
+      background: #1f1f1f;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 18px;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar a:hover {
+      color: #3a7afe;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background: #3a7afe;
+      color: white;
+    }
+
+    tr:hover {
+      background: #f0f4ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="index.html" class="logo">Shelf.co</a>
+    </div>
+    <div class="nav-right">
+      <a href="products.html">Books</a>
+      <a href="order.html">Orders</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h2>Order History</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Book</th>
+          <th>Price</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+
+      <tbody id="order-table"></tbody>
+    </table>
+  </div>
+
+  <script>
+    async function loadOrders() {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const response = await fetch(`http://localhost:3000/orders?username=${user.username}&role=${user.role}`);
+      let orders = await response.json();
+
+      orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      const table = document.getElementById("order-table");
+      table.innerHTML = "";
+
+      orders.forEach(order => {
+        const row = `
+          <tr>
+            <td>${order._id}</td>
+            <td>${order.productTitle}</td>
+            <td>$${order.price}</td>
+            <td>${new Date(order.createdAt).toLocaleString()}</td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
+    }
+
+    loadOrders();
+  </script>
+
+</body>
+</html>
