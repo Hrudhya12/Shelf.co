@@ -15,13 +15,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// MongoDB
 mongoose
   .connect("mongodb+srv://admin:2004@cluster0.ufwwgdu.mongodb.net/?appName=Cluster0")
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log("MongoDB error:", err));
 
-// Product model
 const ProductSchema = new mongoose.Schema({
   title: String,
   author: String,
@@ -32,7 +30,6 @@ const ProductSchema = new mongoose.Schema({
 
 const Product = mongoose.model("Product", ProductSchema);
 
-// Order model
 const OrderSchema = new mongoose.Schema({
   productTitle: String,
   productId: String,
@@ -50,19 +47,17 @@ const OrderSchema = new mongoose.Schema({
 
 const Order = mongoose.model("Order", OrderSchema);
 
-// User model
 const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
   role: {
     type: String,
-    default: "user" // "admin" or "user"
+    default: "user" 
   }
 });
 
 const User = mongoose.model("User", UserSchema);
 
-// Auth routes
 app.post("/register", async (req, res) => {
   const { username, password, role } = req.body;
 
@@ -88,7 +83,6 @@ app.post("/login", async (req, res) => {
   });
 });
 
-// Product routes
 app.get("/products", async (req, res) => {
   const products = await Product.find();
   res.json(products);
@@ -123,7 +117,6 @@ app.delete("/products/:id", async (req, res) => {
   res.json({ message: "Product deleted" });
 });
 
-// Order routes
 app.post("/orders", async (req, res) => {
   const { productId, productTitle, price, username } = req.body;
 
@@ -143,17 +136,14 @@ app.get("/orders", async (req, res) => {
   const { username, role } = req.query;
 
   if (role === "admin") {
-    // Admin sees ALL orders
     const orders = await Order.find().sort({ createdAt: -1 });
     return res.json(orders);
   }
 
-  // Normal user sees ONLY their orders
   const orders = await Order.find({ username }).sort({ createdAt: -1 });
   res.json(orders);
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
