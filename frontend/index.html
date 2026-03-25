@@ -32,11 +32,10 @@
       font-weight: bold;
     }
 
-    /* NEW: Light grey hero section */
     .hero {
       text-align: center;
       padding: 120px 20px;
-      background: #e6e6e6; /* soft grey */
+      background: #e6e6e6; 
       color: #333;
     }
 
@@ -65,7 +64,6 @@
       background: #2f63d8;
     }
 
-    /* Featured Book Section */
     .featured {
       max-width: 900px;
       margin: 50px auto;
@@ -124,20 +122,18 @@
     </div>
   </nav>
 
-  <!-- HERO SECTION -->
   <section class="hero">
     <h1>Welcome to Shelf.co</h1>
     <p>Your digital bookstore for every mood</p>
     <a href="products.html" class="hero-btn">Browse Books</a>
   </section>
 
-  <!-- FEATURED BOOK SECTION -->
   <div class="featured" id="featured-book">
-    <!-- Filled by JS -->
+    
   </div>
 
   <script>
-    // Load a random featured book from your backend
+    
     async function loadFeaturedBook() {
       const response = await fetch("http://localhost:3000/products");
       const books = await response.json();
@@ -147,7 +143,7 @@
         return;
       }
 
-      // Pick a random book
+      
       const book = books[Math.floor(Math.random() * books.length)];
 
       document.getElementById("featured-book").innerHTML = `
